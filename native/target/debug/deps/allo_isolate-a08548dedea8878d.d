@@ -1,0 +1,10 @@
+c:\ION\Rust\Flashing_tool\flashing_tool\native\target\debug\deps\allo_isolate-a08548dedea8878d.rmeta: C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\lib.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\dart_array.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart_extra.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\chrono.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\ffi.rs
+
+c:\ION\Rust\Flashing_tool\flashing_tool\native\target\debug\deps\allo_isolate-a08548dedea8878d.d: C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\lib.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\dart_array.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart_extra.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\chrono.rs C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\ffi.rs
+
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\lib.rs:
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\dart_array.rs:
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart.rs:
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\into_dart_extra.rs:
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\chrono.rs:
+C:\Users\dvandang\.cargo\registry\src\github.com-1ecc6299db9ec823\allo-isolate-0.1.14\src\ffi.rs:
