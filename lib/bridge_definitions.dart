@@ -8,7 +8,39 @@ import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 
 abstract class Native {
-  Future<String> helloWorld({dynamic hint});
+  Stream<BatteryUpdate> batteryEventStream({dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kHelloWorldConstMeta;
+  FlutterRustBridgeTaskConstMeta get kBatteryEventStreamConstMeta;
+
+  Future<bool> getBatteryStatus({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGetBatteryStatusConstMeta;
+
+  Future<void> init({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kInitConstMeta;
+}
+
+class BatteryUpdate {
+  final int? chargeRatesInMilliwatts;
+  final int? designCapacityInMilliwattHours;
+  final int? fullChargeCapacityInMilliwattHours;
+  final int? remainingCapacityInMilliwattHours;
+  final ChargingState status;
+
+  BatteryUpdate({
+    this.chargeRatesInMilliwatts,
+    this.designCapacityInMilliwattHours,
+    this.fullChargeCapacityInMilliwattHours,
+    this.remainingCapacityInMilliwattHours,
+    required this.status,
+  });
+}
+
+enum ChargingState {
+  Charging,
+  Discharging,
+  Idle,
+  NotPresent,
+  Unknown,
 }

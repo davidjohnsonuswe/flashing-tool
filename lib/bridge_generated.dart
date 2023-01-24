@@ -24,19 +24,51 @@ class NativeImpl implements Native {
   factory NativeImpl.wasm(FutureOr<WasmModule> module) =>
       NativeImpl(module as ExternalLibrary);
   NativeImpl.raw(this._platform);
-  Future<String> helloWorld({dynamic hint}) {
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_hello_world(port_),
-      parseSuccessData: _wire2api_String,
-      constMeta: kHelloWorldConstMeta,
+  Stream<BatteryUpdate> batteryEventStream({dynamic hint}) {
+    return _platform.executeStream(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_battery_event_stream(port_),
+      parseSuccessData: _wire2api_battery_update,
+      constMeta: kBatteryEventStreamConstMeta,
       argValues: [],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHelloWorldConstMeta =>
+  FlutterRustBridgeTaskConstMeta get kBatteryEventStreamConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
-        debugName: "hello_world",
+        debugName: "battery_event_stream",
+        argNames: [],
+      );
+
+  Future<bool> getBatteryStatus({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_get_battery_status(port_),
+      parseSuccessData: _wire2api_bool,
+      constMeta: kGetBatteryStatusConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kGetBatteryStatusConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "get_battery_status",
+        argNames: [],
+      );
+
+  Future<void> init({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_init(port_),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kInitConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kInitConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "init",
         argNames: [],
       );
 
@@ -45,16 +77,41 @@ class NativeImpl implements Native {
   }
 // Section: wire2api
 
-  String _wire2api_String(dynamic raw) {
-    return raw as String;
+  BatteryUpdate _wire2api_battery_update(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return BatteryUpdate(
+      chargeRatesInMilliwatts: _wire2api_opt_box_autoadd_i32(arr[0]),
+      designCapacityInMilliwattHours: _wire2api_opt_box_autoadd_i32(arr[1]),
+      fullChargeCapacityInMilliwattHours: _wire2api_opt_box_autoadd_i32(arr[2]),
+      remainingCapacityInMilliwattHours: _wire2api_opt_box_autoadd_i32(arr[3]),
+      status: _wire2api_charging_state(arr[4]),
+    );
   }
 
-  int _wire2api_u8(dynamic raw) {
+  bool _wire2api_bool(dynamic raw) {
+    return raw as bool;
+  }
+
+  int _wire2api_box_autoadd_i32(dynamic raw) {
     return raw as int;
   }
 
-  Uint8List _wire2api_uint_8_list(dynamic raw) {
-    return raw as Uint8List;
+  ChargingState _wire2api_charging_state(dynamic raw) {
+    return ChargingState.values[raw];
+  }
+
+  int _wire2api_i32(dynamic raw) {
+    return raw as int;
+  }
+
+  int? _wire2api_opt_box_autoadd_i32(dynamic raw) {
+    return raw == null ? null : _wire2api_box_autoadd_i32(raw);
+  }
+
+  void _wire2api_unit(dynamic raw) {
+    return;
   }
 }
 
@@ -168,19 +225,45 @@ class NativeWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
-  void wire_hello_world(
+  void wire_battery_event_stream(
     int port_,
   ) {
-    return _wire_hello_world(
+    return _wire_battery_event_stream(
       port_,
     );
   }
 
-  late final _wire_hello_worldPtr =
+  late final _wire_battery_event_streamPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-          'wire_hello_world');
-  late final _wire_hello_world =
-      _wire_hello_worldPtr.asFunction<void Function(int)>();
+          'wire_battery_event_stream');
+  late final _wire_battery_event_stream =
+      _wire_battery_event_streamPtr.asFunction<void Function(int)>();
+
+  void wire_get_battery_status(
+    int port_,
+  ) {
+    return _wire_get_battery_status(
+      port_,
+    );
+  }
+
+  late final _wire_get_battery_statusPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_get_battery_status');
+  late final _wire_get_battery_status =
+      _wire_get_battery_statusPtr.asFunction<void Function(int)>();
+
+  void wire_init(
+    int port_,
+  ) {
+    return _wire_init(
+      port_,
+    );
+  }
+
+  late final _wire_initPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_init');
+  late final _wire_init = _wire_initPtr.asFunction<void Function(int)>();
 
   void free_WireSyncReturn(
     WireSyncReturn ptr,

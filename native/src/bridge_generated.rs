@@ -21,14 +21,34 @@ use std::sync::Arc;
 
 // Section: wire functions
 
-fn wire_hello_world_impl(port_: MessagePort) {
+fn wire_battery_event_stream_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
-            debug_name: "hello_world",
+            debug_name: "battery_event_stream",
+            port: Some(port_),
+            mode: FfiCallMode::Stream,
+        },
+        move || move |task_callback| battery_event_stream(task_callback.stream_sink()),
+    )
+}
+fn wire_get_battery_status_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "get_battery_status",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
-        move || move |task_callback| Ok(hello_world()),
+        move || move |task_callback| get_battery_status(),
+    )
+}
+fn wire_init_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "init",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(init()),
     )
 }
 // Section: wrapper structs
@@ -54,6 +74,33 @@ where
     }
 }
 // Section: impl IntoDart
+
+impl support::IntoDart for BatteryUpdate {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.charge_rates_in_milliwatts.into_dart(),
+            self.design_capacity_in_milliwatt_hours.into_dart(),
+            self.full_charge_capacity_in_milliwatt_hours.into_dart(),
+            self.remaining_capacity_in_milliwatt_hours.into_dart(),
+            self.status.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for BatteryUpdate {}
+
+impl support::IntoDart for ChargingState {
+    fn into_dart(self) -> support::DartAbi {
+        match self {
+            Self::Charging => 0,
+            Self::Discharging => 1,
+            Self::Idle => 2,
+            Self::NotPresent => 3,
+            Self::Unknown => 4,
+        }
+        .into_dart()
+    }
+}
 
 // Section: executor
 

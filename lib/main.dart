@@ -49,17 +49,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState(){
+    api.init();
+    super.initState();
   }
 
   @override
@@ -74,24 +67,50 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text("Flutter Battery Window"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: FutureBuilder(
-          // All Rust function are called as Future
-          future: api.helloWorld(), //Rust function we are calling
-          builder: (context, data){
-            if (data.hasData){
-              return Text(data.data!);//The string to display
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          FutureBuilder(
+            future: api.getBatteryStatus(),
+            builder: (context,data){
+              return Text(
+                'System has battery present: ${data.data}',
+                style: TextStyle(
+                  color: (data.data ?? false) ? Colors.green : Colors.red
+                ),
+              );
+            }),
+            StreamBuilder(
+              stream: api.batteryEventStream(),
+              builder: (context,data){
+                if (data.hasData){
+                  return Column(
+                    children: [
+                      Text("Charge rate in milliwatts: ${data.data!.chargeRatesInMilliwatts.toString()}"),
+                      Text("Design capacity in milliwatts: ${data.data!.designCapacityInMilliwattHours.toString()}"),
+                      Text("Full charge in milliwatt hours: ${data.data!.fullChargeCapacityInMilliwattHours.toString()}"),
+                      Text("Remaining capacity in milliwatts: ${data.data!.remainingCapacityInMilliwattHours}"),
+                      Text("Battery status is ${data.data!.status}")
+                    ],
+                  );
+                }
+                return Column(
+                  children: const [
+                    Text("Waiting for a battery event."),
+                    Text("If you have a desktop computer with no battery, this event will never come..."),
+                    CircularProgressIndicator(),
+                  ],
+                );
+              })
+        ]),
       ),
     );
   }
 }
+
